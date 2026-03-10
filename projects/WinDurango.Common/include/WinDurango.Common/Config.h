@@ -8,9 +8,6 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
-/*
- * TODO: Make it to write back
- */
 namespace wd::common
 {
     class Config
@@ -24,6 +21,7 @@ namespace wd::common
         }
 
         bool parse();
+        bool save();
 
         /*
          * Operator Overloading
@@ -32,6 +30,10 @@ namespace wd::common
         template <typename T> T &operator[](std::string node);
 
         template <typename T> bool set(std::string node, T type);
+
+        template <typename T> T get(std::string node);
+
+        bool contains(std::string node);
 
       private:
         std::shared_ptr<interfaces::storage::File> pFile;
