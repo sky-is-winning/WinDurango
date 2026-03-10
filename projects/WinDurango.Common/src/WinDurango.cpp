@@ -46,7 +46,15 @@ namespace wd::common
             config = Config(ConfigFile);
             log = Logging(LogFile);
 
-            config.parse();
+            bool configExisted = config.parse();
+            bool needsSave = !configExisted;
+            if (!config.contains("username"))
+            {
+                config.set<std::string>("username", "Player");
+                needsSave = true;
+            }
+            if (needsSave)
+                config.save();
             log.Initialize();
 
             this->_inited = true;

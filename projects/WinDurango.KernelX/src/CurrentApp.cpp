@@ -1,4 +1,5 @@
 #include "CurrentApp.h"
+#include "WinDurango.Common/WinDurango.h"
 
 HRESULT EraXboxUserLicenseInformationWrapper::QueryInterface(const IID &riid, void **ppvObject)
 {
@@ -42,7 +43,16 @@ HRESULT EraXboxUserLicenseInformationWrapper::GetTrustLevel(TrustLevel *trustLev
 
 HRESULT EraXboxUserLicenseInformationWrapper::get_CurrentLicenseUserXuid(winrt::hstring *value)
 {
-    *value = L"0";
+    auto winDurango = wd::common::WinDurango::GetInstance();
+    if (winDurango->inited() && winDurango->config.contains("username"))
+    {
+        std::string username = winDurango->config.get<std::string>("username");
+        *value = winrt::to_hstring(username);
+    }
+    else
+    {
+        *value = L"0";
+    }
     return S_OK;
 }
 
